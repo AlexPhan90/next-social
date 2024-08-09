@@ -28,7 +28,51 @@ const Comments = () => {
         </div>
       </div>
       {/* COMMENT */}
-      <div className=""></div>
+      <div className="">
+        {/* COMMENT */}
+        <div className="flex gap-4 justify-between mt-6">
+          {/* AVATAR */}
+          <Image
+            src="https://images.pexels.com/photos/60597/dahlia-red-blossom-bloom-60597.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt=""
+            width={40}
+            height={40}
+            className="w-10 h-10 rounded-full"
+          />
+          {/* DES */}
+          <div className=" flex flex-col gap-2 flex-1">
+            <span className="font-medium"> Bernice Spencer</span>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.{" "}
+            </p>
+            <div className="flex items-center gap-8 text-xs text-gray-500 mt-2">
+              <div className="flex items-center gap-4">
+                <Image
+                  src="/like.png"
+                  alt=""
+                  width={12}
+                  height={12}
+                  className="cursor pointer w-4 h-4"
+                ></Image>
+                <span className="text-gray-300">|</span>
+                <span className="text-gray-500">123 Likes</span>
+              </div>
+              <div className="">Reply</div>
+            </div>
+          </div>
+          {/* ICON */}
+          <Image
+            src="/more.png"
+            alt=""
+            width={16}
+            height={16}
+            className="cursor pointer w-4 h-4"
+          ></Image>
+        </div>
+      </div>
     </div>
   );
 };
