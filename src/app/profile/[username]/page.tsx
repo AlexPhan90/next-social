@@ -23,6 +23,26 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
     },
   });
   if (!user) return notFound();
+
+  const { userId: currentUserId } = auth();
+
+  let isBlocked;
+
+  if (currentUserId) {
+    const res = await prisma.block.findFirst({
+      where: {
+        blockerId: user.id,
+        blockedId: currentUserId,
+      },
+    });
+
+    if (res) isBlocked = true;
+  } else {
+    isBlocked = false;
+  }
+
+  if (isBlocked) return notFound();
+
   return (
     <div className="flex gap-6 pt-6">
       <div className="hidden xl:block w-[20%]">
@@ -34,40 +54,44 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
           <div className="flex flex-col items-center justify-between">
             <div className="w-full h-64 relative">
               <Image
-                src="https://images.pexels.com/photos/2253573/pexels-photo-2253573.jpeg?auto=compress&cs=tinysrgb&w=600"
+                src={user.cover || "/noCover.png"}
                 alt=""
                 fill
                 className="rounded-md object-cover"
               />
               <Image
-                src="https://images.pexels.com/photos/1751542/pexels-photo-1751542.jpeg?auto=compress&cs=tinysrgb&w=600"
+                src={user.avatar || "/noAvatar.png"}
                 alt=""
                 width={128}
                 height={128}
                 className="w-32 h-32 rounded-full absolute left-0 right-0 m-auto -bottom-16 ring-4 ring-white object-cover"
               />
             </div>
-            <h1 className="mt-20 mb-4 text-2xl font-medium"> Elva Weaver</h1>
+            <h1 className="mt-20 mb-4 text-2xl font-medium">
+              {user.name && user.surname
+                ? user.name + " " + user.surname
+                : user.username}
+            </h1>
             <div className="flex items-center justify-center gap-12 mb-4">
               <div className="flex flex-col items-center">
-                <span className="font-medium">100</span>
+                <span className="font-medium">{user._count.posts}</span>
                 <span className="text-sm">Posts</span>
               </div>
               <div className="flex flex-col items-center">
-                <span className="font-medium">45</span>
+                <span className="font-medium">{user._count.followers}</span>
                 <span className="text-sm">Followers</span>
               </div>
               <div className="flex flex-col items-center">
-                <span className="font-medium"> 123</span>
+                <span className="font-medium"> {user._count.followings}</span>
                 <span className="text-sm">Following</span>
               </div>
             </div>
           </div>
-          <Feed />
+          <Feed username={user.username} />
         </div>
       </div>
       <div className="hidden lg:block w-[30%]">
-        <RightMenu userId="test" />
+        <RightMenu user={user} />
       </div>
     </div>
   );
