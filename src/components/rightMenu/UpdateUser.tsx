@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useActionState, useState } from "react";
+import UpdateButton from "./UpdateButton";
 
 const UpdateUser = ({ user }: { user: User }) => {
   const [open, setOpen] = useState(false);
@@ -52,6 +53,103 @@ const UpdateUser = ({ user }: { user: User }) => {
                 <span className="text-xs underline text-gray-600">Change</span>
               </div>
             </div>
+            {/* WRAPPER */}
+            {/* WRAPPER */}
+            <div className="flex flex-wrap justify-between gap-2 xl:gap-4">
+              {/* INPUT */}
+              <div className="flex flex-col gap-4">
+                <label htmlFor="" className="text-xs text-gray-500">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  placeholder={user.name || "John"}
+                  className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                  name="name"
+                />
+              </div>
+              <div className="flex flex-col gap-4">
+                <label htmlFor="" className="text-xs text-gray-500">
+                  Surname
+                </label>
+                <input
+                  type="text"
+                  placeholder={user.surname || "Doe"}
+                  className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                  name="surname"
+                />
+              </div>
+              {/* INPUT */}
+              <div className="flex flex-col gap-4">
+                <label htmlFor="" className="text-xs text-gray-500">
+                  Description
+                </label>
+                <input
+                  type="text"
+                  placeholder={user.description || "Life is beautiful..."}
+                  className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                  name="description"
+                />
+              </div>
+              {/* INPUT */}
+              <div className="flex flex-col gap-4">
+                <label htmlFor="" className="text-xs text-gray-500">
+                  City
+                </label>
+                <input
+                  type="text"
+                  placeholder={user.city || "New York"}
+                  className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                  name="city"
+                />
+              </div>
+              {/* INPUT */}
+
+              <div className="flex flex-col gap-4">
+                <label htmlFor="" className="text-xs text-gray-500">
+                  School
+                </label>
+                <input
+                  type="text"
+                  placeholder={user.school || "MIT"}
+                  className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                  name="school"
+                />
+              </div>
+              {/* INPUT */}
+
+              <div className="flex flex-col gap-4">
+                <label htmlFor="" className="text-xs text-gray-500">
+                  Work
+                </label>
+                <input
+                  type="text"
+                  placeholder={user.work || "Apple Inc."}
+                  className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                  name="work"
+                />
+              </div>
+              {/* INPUT */}
+
+              <div className="flex flex-col gap-4">
+                <label htmlFor="" className="text-xs text-gray-500">
+                  Website
+                </label>
+                <input
+                  type="text"
+                  placeholder={user.website || "lama.dev"}
+                  className="ring-1 ring-gray-300 p-[13px] rounded-md text-sm"
+                  name="website"
+                />
+              </div>
+            </div>
+            <UpdateButton />
+            {state.success && (
+              <span className="text-green-500">Profile has been updated!</span>
+            )}
+            {state.error && (
+              <span className="text-red-500">Something went wrong!</span>
+            )}
             <div
               className="absolute text-xl right-2 top-3 cursor-pointer"
               onClick={handleClose}
