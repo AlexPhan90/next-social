@@ -5,9 +5,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useActionState, useState } from "react";
 import UpdateButton from "./UpdateButton";
-
+import { CldUploadWidget } from "next-cloudinary";
 const UpdateUser = ({ user }: { user: User }) => {
   const [open, setOpen] = useState(false);
+  const [cover, setCover] = useState<any>(false);
 
   // const [state, formAction] = useActionState(updateProfile, {
   //   success: false,
@@ -43,20 +44,34 @@ const UpdateUser = ({ user }: { user: User }) => {
             <div className="mt-4 text-xs text-gray-500">
               Use the navbar profile to change the avatar or username.
             </div>
-            <div className="flex flex-col gap-4 my-4">
-              <label htmlFor="">Cover Picture</label>
-              <div className="flex items-center gap-2 cursor-pointer">
-                <Image
-                  src={user.cover || "/noCover.png"}
-                  alt=""
-                  width={48}
-                  height={32}
-                  className="w-12 h-8 rounded-md object-cover"
-                />
-                <span className="text-xs underline text-gray-600">Change</span>
-              </div>
-            </div>
-            {/* WRAPPER */}
+            {/* COVER PIC UPLOAD */}
+            <CldUploadWidget
+              uploadPreset="social"
+              onSuccess={(result) => setCover(result.info)}
+            >
+              {({ open }) => {
+                return (
+                  <div
+                    className="flex flex-col gap-4 my-4"
+                    onClick={() => open()}
+                  >
+                    <label htmlFor="">Cover Picture</label>
+                    <div className="flex items-center gap-2 cursor-pointer">
+                      <Image
+                        src={user.cover || "/noCover.png"}
+                        alt=""
+                        width={48}
+                        height={32}
+                        className="w-12 h-8 rounded-md object-cover"
+                      />
+                      <span className="text-xs underline text-gray-600">
+                        Change
+                      </span>
+                    </div>
+                  </div>
+                );
+              }}
+            </CldUploadWidget>
             {/* WRAPPER */}
             <div className="flex flex-wrap justify-between gap-2 xl:gap-4">
               {/* INPUT */}

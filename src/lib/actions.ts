@@ -156,6 +156,9 @@ export const declineFollowRequest = async (userId: string) => {
 export const updateProfile = async (formData: FormData) => {
   const fields = Object.fromEntries(formData);
   console.log(fields);
+  const filteredFields = Object.fromEntries(
+    Object.entries(fields).filter(([_, value]) => value !== "")
+  );
   const Profile = z.object({
     cover: z.string().optional(),
     name: z.string().max(60).optional(),
@@ -170,6 +173,22 @@ export const updateProfile = async (formData: FormData) => {
   if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors);
     return { success: false, error: true };
+  }
+  const { userId } = auth();
+
+  if (!userId) {
+    return { success: false, error: true };
+  }
+
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: validatedFields.data,
+    });
+  } catch (err) {
+    console.log(err);
   }
 };
 
