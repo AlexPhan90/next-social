@@ -1,8 +1,25 @@
+import prisma from "@/lib/client";
+import { auth } from "@clerk/nextjs/server";
+import Image from "next/image";
 import Link from "next/link";
 import FriendRequestList from "./FriendRequestList";
-import Image from "next/image";
 
-const FriendRequests = () => {
+const FriendRequests = async () => {
+  const { userId } = auth();
+
+  if (!userId) return null;
+
+  const requests = await prisma.followRequest.findMany({
+    where: {
+      receiverId: userId,
+    },
+    include: {
+      sender: true,
+    },
+  });
+
+  if (requests.length === 0) return null;
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4">
       {/* TOP */}
@@ -13,91 +30,7 @@ const FriendRequests = () => {
         </Link>
       </div>
       {/* USER */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Image
-            src="https://images.pexels.com/photos/2058498/pexels-photo-2058498.jpeg?auto=compress&cs=tinysrgb&w=600"
-            alt=""
-            width={40}
-            height={40}
-            className="w-10 h-10 rounded-full object-cover "
-          />
-          <span className="font-semibold">Wayne Burton</span>
-        </div>
-        <div className="flex gap-3 justify-end">
-          <Image
-            src="/accept.png"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          />
-          <Image
-            src="/reject.png"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          />
-        </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Image
-            src="https://images.pexels.com/photos/2058498/pexels-photo-2058498.jpeg?auto=compress&cs=tinysrgb&w=600"
-            alt=""
-            width={40}
-            height={40}
-            className="w-10 h-10 rounded-full object-cover "
-          />
-          <span className="font-semibold">Wayne Burton</span>
-        </div>
-        <div className="flex gap-3 justify-end">
-          <Image
-            src="/accept.png"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          />
-          <Image
-            src="/reject.png"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          />
-        </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Image
-            src="https://images.pexels.com/photos/2058498/pexels-photo-2058498.jpeg?auto=compress&cs=tinysrgb&w=600"
-            alt=""
-            width={40}
-            height={40}
-            className="w-10 h-10 rounded-full object-cover "
-          />
-          <span className="font-semibold">Wayne Burton</span>
-        </div>
-        <div className="flex gap-3 justify-end">
-          <Image
-            src="/accept.png"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          />
-          <Image
-            src="/reject.png"
-            alt=""
-            width={20}
-            height={20}
-            className="cursor-pointer "
-          />
-        </div>
-      </div>
-      {/* <FriendRequestList /> */}
+      <FriendRequestList requests={requests} />
     </div>
   );
 };
